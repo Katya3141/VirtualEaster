@@ -50,7 +50,7 @@ public class Server {
                 public void run() {
                     try {
                         handle(clientSocket);  
-                    } catch (IOException ioe) {
+                    } catch (Exception ioe) {
                         ioe.printStackTrace(); // but don't terminate serve()
                     } finally {
                         try {
@@ -71,8 +71,9 @@ public class Server {
      * Handle one client connection. Returns when client disconnects.
      * @param socket socket where client is connected
      * @throws IOException if connection encounters an error
+     * @throws InterruptedException 
      */
-    private static void handle(Socket socket) throws IOException {
+    private static void handle(Socket socket) throws IOException, InterruptedException {
         System.err.println("client connected: " + socket);
         
         // get the socket's input stream, and wrap converters around it
@@ -89,11 +90,18 @@ public class Server {
         try {
             // get the client's name
             String name = in.readLine();
+            int currentPlayerNum = players.size();
             players.add(new Player(name, new Egg(), new Egg()));
-            out.println(players);
-            out.flush();
+
             // wait until everyone has connected
-            while (players.size() < NUM_PLAYERS) {}
+            while (players.size() < NUM_PLAYERS) {
+                if (players.size() != currentPlayerNum) {
+                    out.println(players);
+                    out.flush();
+                }
+                currentPlayerNum = players.size();
+                Thread.sleep(1000);
+            }
 
         } finally {
             out.close();

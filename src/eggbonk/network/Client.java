@@ -86,11 +86,11 @@ public class Client implements AutoCloseable {
             // send the request
             client.sendRequest(input);
             
-            // get the reply
-            String alreadyConnected = client.getReply();
-            System.out.println("Already connected: " + alreadyConnected);
-            
-            while(true) {}
+            while(true) {
+                // get the reply
+                String alreadyConnected = client.getReply();
+                System.out.println("Already connected: " + alreadyConnected);
+            }
             
         } catch (IOException ioe) {
             ioe.printStackTrace();
