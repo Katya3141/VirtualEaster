@@ -78,7 +78,7 @@ public class Client implements AutoCloseable {
      */
     public static void main(String[] args) {
         try (
-                Client client = new Client("localhost", Server.PORT);
+                Client client = new Client("192.168.2.82", 4949);
                 BufferedReader systemIn = new BufferedReader(new InputStreamReader(System.in));
         ) {
             gui.startGUI();

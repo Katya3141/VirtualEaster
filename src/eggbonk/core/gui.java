@@ -2,26 +2,26 @@ package eggbonk.core;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Toolkit;
-
 import javax.swing.*;
+
 
 public class gui {
 	public static void main(String[] args) {
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		int screenHeight = screenSize.height;
-		int screenWidth = screenSize.width;
-
+		//creates new JFrame
 		JFrame frame = new JFrame("Virtual Easter");
-
-		frame.setSize(screenWidth, screenHeight);
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		frame.setSize(screenSize.width, screenSize.height);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+		//creates new JPanel and adds to the JFrame
 		JPanel panel = new JPanel();    
-
 		frame.add(panel);
-		placeStuff(panel);
 
+		//places all the different components into the panel and sets the frame visible
+		placeStuff(panel);
 		frame.setVisible(true);
 	}
 	
@@ -43,42 +43,72 @@ public class gui {
         frame.setVisible(true);
 	}
 
+	/**
+	 * Places all of the different components inside the JPanel
+	 * @param the JPanel
+	 */
 	private static void placeStuff(JPanel panel) {
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		int screenHeight = screenSize.height;
-		int screenWidth = screenSize.width;
+		JLabel label;
+		panel.setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+
+		//welcome JLabel
+		label = new JLabel("WELCOME TO");
+		label.setFont(new Font("Arial", Font.PLAIN, 20));
+		label.setForeground(new Color(0x4287f5));
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.ipady = 40;
+		c.weightx = 0.0;
+		c.gridwidth = 3;
+		c.gridx = 0;
+		c.gridy = 0;
+		panel.add(label, c);
+
+		//Virtual Easter JLabel
+		label = new JLabel("VIRTUAL EASTER 2020");
+		label.setFont(new Font("Arial", Font.BOLD, 50));
+		label.setForeground(new Color(0x4287f5));
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.ipady = 40;
+		c.weightx = 0.0;
+		c.gridwidth = 3;
+		c.gridx = 0;
+		c.gridy = 1;
+		panel.add(label, c);
+
+		//Enter your name JLabel
+		label = new JLabel("To get started, enter your name: ");
+		label.setFont(new Font("Arial", Font.PLAIN, 20));
+		label.setForeground(new Color(0xfaa0fa));
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.weightx = 0.0;
+		c.gridwidth = 4;
+		c.gridx = 0;
+		c.gridy = 3;
+		panel.add(label, c);
 		
-		panel.setLayout(null);
-
-		JLabel welcome = new JLabel("WELCOME TO");
-		welcome.setBounds(screenWidth/2-150,screenHeight/6,300,25);
-		welcome.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 30));
-		welcome.setForeground(new Color(0x03a5fc));
-		panel.add(welcome);
-
-		JLabel ve = new JLabel("VIRTUAL EASTER!");
-		ve.setBounds(screenWidth/2-300,screenHeight/4,650,60);
-		ve.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 70));
-		ve.setForeground(new Color(0x03a5fc));
-		panel.add(ve);
-
-		JLabel name = new JLabel("Enter your name to start!");
-		name.setBounds(screenWidth/2-300,screenHeight/3+50,500,25);
-		name.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 25));
-		name.setForeground(new Color(0xffa1f9));
-		panel.add(name);
-
-		JTextField userText = new JTextField(20);
-		userText.setBounds(screenWidth/2+20,screenHeight/3+50,120,25);
-		panel.add(userText);
-
-		JButton go = new JButton("GO!");
-		go.setBounds(screenWidth/2,screenHeight/2,140,80);
-		go.setFont(new Font("Arial Rounded MT Bold", Font.BOLD, 50));
-		go.setForeground(new Color(0xa9fcab));
-		go.setBorder(null);
-		panel.add(go);
+		//Textfield to enter name
+		JTextField text = new JTextField("E.B.");
+		text.setFont(new Font("Arial", Font.PLAIN, 30));
+		text.setHorizontalAlignment(JTextField.CENTER);
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.weightx = 0.0;
+		c.gridwidth = 4;
+		c.gridx = 0;
+		c.gridy = 4;
+		panel.add(text, c);
 		
+		//Go button
+		JButton button = new JButton("GO!");
+		button.setFont(new Font("Arial", Font.PLAIN, 30));
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.weightx = 0.0;
+		c.gridwidth = 3;
+		c.gridx = 3;
+		c.gridy = 4;
+		panel.add(button, c);
+
+
 		panel.setBackground(Color.WHITE);
 	}
 
