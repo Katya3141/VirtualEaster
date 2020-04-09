@@ -9,6 +9,8 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import eggbonk.core.gui;
+
 public class Client implements AutoCloseable {
     private Socket socket;
     private BufferedReader in;
@@ -79,18 +81,20 @@ public class Client implements AutoCloseable {
                 Client client = new Client("localhost", Server.PORT);
                 BufferedReader systemIn = new BufferedReader(new InputStreamReader(System.in));
         ) {
-            System.out.println("Hello! Welcome to Virtual Easter 2020! What's your name?");
+            gui.startGUI();
             
-            final String input = systemIn.readLine();
-            
-            // send the request
-            client.sendRequest(input);
-            
-            while(true) {
-                // get the reply
-                String alreadyConnected = client.getReply();
-                System.out.println("Already connected: " + alreadyConnected);
-            }
+//            System.out.println("Hello! Welcome to Virtual Easter 2020! What's your name?");
+//            
+//            final String input = systemIn.readLine();
+//            
+//            // send the request
+//            client.sendRequest(input);
+//            
+//            while(true) {
+//                // get the reply
+//                String alreadyConnected = client.getReply();
+//                System.out.println("Already connected: " + alreadyConnected);
+//            }
             
         } catch (IOException ioe) {
             ioe.printStackTrace();

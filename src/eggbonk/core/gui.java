@@ -24,6 +24,24 @@ public class gui {
 
 		frame.setVisible(true);
 	}
+	
+	public static void startGUI() {
+	    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int screenHeight = screenSize.height;
+        int screenWidth = screenSize.width;
+
+        JFrame frame = new JFrame("Virtual Easter");
+
+        frame.setSize(screenWidth, screenHeight);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        JPanel panel = new JPanel();    
+
+        frame.add(panel);
+        placeStuff(panel);
+
+        frame.setVisible(true);
+	}
 
 	private static void placeStuff(JPanel panel) {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
