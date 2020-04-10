@@ -80,7 +80,7 @@ public class Client implements AutoCloseable {
      */
     public static void main(String[] args) {
         try (
-                Client client = new Client("localhost", 4949);
+                Client client = new Client("localhost", 1234);
         ) {
             String name = gui.startGUI();
             System.out.println("got the name " + name);
