@@ -1,18 +1,14 @@
 package eggbonk.network;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.charset.StandardCharsets;
 
 import java.util.List;
 import java.util.ArrayList;
 
-import eggbonk.core.Egg;
 import eggbonk.core.Game;
 import eggbonk.core.Player;
 
@@ -76,34 +72,28 @@ public class Server {
     private static void handle(Socket socket) throws IOException, InterruptedException {
         System.err.println("client connected: " + socket);
         
-        // get the socket's input stream, and wrap converters around it
-        // that convert it from a byte stream to a character stream,
-        // and that buffer it so that we can read a line at a time
-        BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
-        
-        // similarly, wrap character=>bytestream converter around the
-        // socket output stream, and wrap a PrintWriter around that so
-        // that we have more convenient ways to write Java primitive
-        // types to it.
-        PrintWriter out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
+        ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+        ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
 
         try {
-            // get the client's name
-            String name = in.readLine();
+            Player player = (Player) in.readObject(); // exception here if client sends incorrect data type
             int currentPlayerNum = players.size();
-            players.add(new Player(name, new Egg(), new Egg()));
 
+            players.add(player);
+            
             // wait until everyone has connected
             while (players.size() < NUM_PLAYERS) {
-                if (players.size() != currentPlayerNum) {
-                    out.println(players);
-                    out.flush();
-                }
-                currentPlayerNum = players.size();
+            		if (currentPlayerNum != players.size()) {
+            			out.writeUnshared(players);
+            			out.flush();
+            			currentPlayerNum = players.size();
+            		}
                 Thread.sleep(1000);
             }
-
-        } finally {
+        } catch (ClassNotFoundException | ClassCastException e) {
+        		System.err.println("input from client was not of the expected type"); // see comment about exception above
+			e.printStackTrace();
+		} finally {
             out.close();
             in.close();
         }

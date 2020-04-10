@@ -1,20 +1,21 @@
 package eggbonk.network;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.List;
 
 import eggbonk.core.gui;
+import eggbonk.core.Egg;
+import eggbonk.core.Player;
 
 public class Client implements AutoCloseable {
     private Socket socket;
-    private BufferedReader in;
-    private PrintWriter out;
+ //   private BufferedReader in;
+    private ObjectInputStream in;
+    private ObjectOutputStream out;
+    public List<Player> alreadyConnected;
     
     /**
      * Make a Client and connect it to a server running on
@@ -23,8 +24,9 @@ public class Client implements AutoCloseable {
      */
     public Client(String hostname, int port) throws IOException {
         socket = new Socket(hostname, port);
-        in = new BufferedReader(new InputStreamReader(socket.getInputStream(), UTF_8));
-        out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), UTF_8));
+        out = new ObjectOutputStream(socket.getOutputStream());
+        socket.getInputStream();
+        in = new ObjectInputStream(socket.getInputStream());
     }
     
     /**
@@ -32,8 +34,8 @@ public class Client implements AutoCloseable {
      * @param request request to send
      * @throws IOException if network or server failure
      */
-    public void sendRequest(String request) throws IOException {
-        out.print(request + "\n");
+    public void sendRequest(Player request) throws IOException {
+        out.writeObject(request);
         out.flush(); // important! make sure x actually gets sent
     }
     
@@ -43,8 +45,13 @@ public class Client implements AutoCloseable {
      * @return square of requested number
      * @throws IOException if network or server failure
      */
-    public String getReply() throws IOException {
-        String reply = in.readLine();
+    public Object getReply() throws IOException {
+        Object reply = null;
+		try {
+			reply = in.readObject();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
         if (reply == null) {
             throw new IOException("connection terminated unexpectedly");
         }
@@ -52,12 +59,7 @@ public class Client implements AutoCloseable {
         if (reply.equals("err")) {
             throw new IOException("server reported request error");
         }
-        
-        try {
-            return (String) reply;
-        } catch (Exception e) {
-            throw new IOException("misformatted reply: " + reply);
-        }
+        return reply;
     }
 
     /**
@@ -78,23 +80,27 @@ public class Client implements AutoCloseable {
      */
     public static void main(String[] args) {
         try (
-                Client client = new Client("192.168.2.82", 4949);
-                BufferedReader systemIn = new BufferedReader(new InputStreamReader(System.in));
+                Client client = new Client("localhost", 4949);
         ) {
-            gui.startGUI();
+            String name = gui.startGUI();
+            System.out.println("got the name " + name);
             
-//            System.out.println("Hello! Welcome to Virtual Easter 2020! What's your name?");
+            	client.sendRequest(new Player(name, new Egg(), new Egg()));
 //            
-//            final String input = systemIn.readLine();
-//            
-//            // send the request
-//            client.sendRequest(input);
-//            
-//            while(true) {
+            while(true) {
 //                // get the reply
-//                String alreadyConnected = client.getReply();
-//                System.out.println("Already connected: " + alreadyConnected);
-//            }
+            		try {
+            			@SuppressWarnings("unchecked")
+					List<Player> alreadyConnected = (List<Player>) client.getReply(); 
+            			gui.players = alreadyConnected;
+            			gui.waitingScreen();
+            			System.out.println("Already connected: " + alreadyConnected);
+            		} catch (ClassCastException e) {
+            			System.err.println("data recieved from server was not of type List<Player>");
+            		}
+                
+                
+            }
             
         } catch (IOException ioe) {
             ioe.printStackTrace();

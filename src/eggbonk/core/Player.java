@@ -1,12 +1,16 @@
 package eggbonk.core;
 
+import java.io.Serializable;
+
 /**
  * This class represents a participant in the Egg Bonk challenge. 
  * Each Player starts with two {@linkplain Egg}s, and can at any point report
  * its current active egg and its current backup egg.
  * @author ianbulovic
  */
-public class Player {
+public class Player implements Serializable{
+
+	private static final long serialVersionUID = -8258986605640084236L;
 	
 	String name;
 	private Egg first, second;

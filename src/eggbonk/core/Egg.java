@@ -1,5 +1,7 @@
 package eggbonk.core;
 
+import java.io.Serializable;
+
 /**
  * This class represents an egg in an Egg Bonk game. 
  * An egg starts out with damage value {@linkplain Egg#UNDAMAGED}, and
@@ -8,7 +10,10 @@ package eggbonk.core;
  * with the {@linkplain #getDamage()} method.
  * @author ianbulovic
  */
-public class Egg {
+public class Egg implements Serializable {
+
+	private static final long serialVersionUID = -8374595842387842732L;
+	
 	private int damage;
 	public static final int UNDAMAGED = 0, CRACKED = 1, BROKEN = 2;
 	
