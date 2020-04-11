@@ -9,12 +9,10 @@ import java.io.Serializable;
  * @author ianbulovic
  */
 public class Player implements Serializable{
-    
-    //TODO equals
 
 	private static final long serialVersionUID = -8258986605640084236L;
 	
-	String name;
+	private String name;
 	private Egg first, second;
 	
 	/**
@@ -64,6 +62,15 @@ public class Player implements Serializable{
 	@Override
 	public String toString() {
 		return name;
+	}
+	
+	@Override
+	public boolean equals(Object other) {
+		if(!(other instanceof Player)) return false;
+		Player o = (Player) other;
+		return name.equals(o.name) &&
+				first.equals(o.first) &&
+				second.equals(o.second);
 	}
 	
 }

@@ -1,8 +1,13 @@
 package eggbonk.core;
 
-import java.awt.Image;
-import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
+
+import javax.imageio.ImageIO;
 
 /**
  * This class represents an egg in an Egg Bonk game. 
@@ -19,13 +24,18 @@ public class Egg implements Serializable {
 	private int damage;
 	public static final int UNDAMAGED = 0, CRACKED = 1, BROKEN = 2;
 	
-	private Image image = Toolkit.getDefaultToolkit().getImage("default-egg.png");
+	private transient BufferedImage image;
 	
 	/**
 	 * Creates an undamaged egg.
 	 */
 	public Egg() {
 		damage = UNDAMAGED;
+		try {
+			image = ImageIO.read(new File("default-egg.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -60,7 +70,7 @@ public class Egg implements Serializable {
 	 * Sets the image of this egg.
 	 * @param img the new image.
 	 */
-	public void setImage(Image img) {
+	public void setImage(BufferedImage img) {
 		image = img;
 	}
 	
@@ -68,8 +78,25 @@ public class Egg implements Serializable {
 	 * Gets the image of this egg.
 	 * @return this egg's image.
 	 */
-	public Image getImage() {
+	public BufferedImage getImage() {
 		return image;
 	}
 	
+	@Override
+	public boolean equals(Object other) {
+		if(!(other instanceof Egg)) return false;
+		Egg o = (Egg) other;
+		return damage == o.damage;
+	}
+	
+	
+	private void writeObject(ObjectOutputStream out) throws IOException {
+		out.defaultWriteObject();
+		ImageIO.write(image, "png", out);
+	}
+	
+	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+		in.defaultReadObject();
+		image = ImageIO.read(in);
+	}
 }
