@@ -143,6 +143,20 @@ public class Gui {
 	
 	private static void eggBonkSetupScreen(List<Player> players) {
 	    //TODO setup screen
+		panel.setBackground(Color.WHITE);
+		addJLabel("PLAYERS STILL IN GAME", true, 20, Color.BLACK, -1, (int)(players.size() / 2), 0, 0);
+		int bigHalf;
+		if(players.size() % 2 == 1)
+			bigHalf = (int)(players.size() / 2) + 1;
+		else
+			bigHalf = players.size() / 2;
+		for(int i = 0; i < bigHalf; i++) {
+			addJLabel(players.get(i).getName(), false, 20, Color.BLACK, -1, bigHalf, i, 1);
+		}
+		for(int i = 0; i < players.size() - bigHalf; i++) {
+			addJLabel(players.get(i + bigHalf).getName(), false, 20, Color.BLACK, -1, bigHalf, i+1, 2);
+		}
+
 	}
 	
 	private static void eggBonkReadyScreen(Player winner, Player loser) {
@@ -150,7 +164,7 @@ public class Gui {
 	    //TODO ready button -> myClient.sendReady();
 		panel.setBackground(new Color(0xffddd4));
 		addJLabel("YOUR EGG HAS BEEN CALLED TO BONK!", true, 40, Color.BLACK, -1, 3, 1, 0);
-		addJLabel("Click the button when you are ready: ", true, 20, Color.BLACK, -1, 3, 1, 1);
+		addJLabel("Click the button when you are ready: ", false, 20, Color.BLACK, -1, 3, 1, 1);
 		JButton readyButton = addButton("READY!", 3, 3, 2);
 		readyButton.addActionListener(new ActionListener() {
 			@Override
