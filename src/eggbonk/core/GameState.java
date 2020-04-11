@@ -4,8 +4,10 @@ import java.io.Serializable;
 import java.util.List;
 
 public class GameState implements Serializable {
-    
-    public enum Phase
+
+	private static final long serialVersionUID = 1L;
+
+	public enum Phase
     {
         SETUP, TRANSITION, BONKING, VICTORY, TOTAL_VICTORY;
     }
