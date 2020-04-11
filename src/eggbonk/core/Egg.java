@@ -1,5 +1,7 @@
 package eggbonk.core;
 
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.io.Serializable;
 
 /**
@@ -16,6 +18,8 @@ public class Egg implements Serializable {
 	
 	private int damage;
 	public static final int UNDAMAGED = 0, CRACKED = 1, BROKEN = 2;
+	
+	private Image image = Toolkit.getDefaultToolkit().getImage("default-egg.png");
 	
 	/**
 	 * Creates an undamaged egg.
@@ -51,4 +55,21 @@ public class Egg implements Serializable {
 	public void crack() {
 		if(damage != BROKEN) damage++;
 	}
+	
+	/**
+	 * Sets the image of this egg.
+	 * @param img the new image.
+	 */
+	public void setImage(Image img) {
+		image = img;
+	}
+	
+	/**
+	 * Gets the image of this egg.
+	 * @return this egg's image.
+	 */
+	public Image getImage() {
+		return image;
+	}
+	
 }
