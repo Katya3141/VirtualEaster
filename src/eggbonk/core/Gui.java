@@ -143,7 +143,7 @@ public class Gui {
 	
 	private static void eggBonkSetupScreen(List<Player> players) {
 	    //TODO setup screen
-		panel.setBackground(Color.WHITE);
+		panel.setBackground(new Color(0xfae6be));
 
 		int bigHalf;
 		if(players.size() % 2 == 1)
@@ -152,23 +152,18 @@ public class Gui {
 			bigHalf = players.size() / 2;
 		
 		for(int i = 0; i < bigHalf; i++)
-			addJLabel(players.get(i).getName(), false, 20, Color.BLACK, -1, 1, 0, i, 1);
+			addJLabel(players.get(i).getName(), false, 40, Color.BLACK, -1, 1, 400/bigHalf, i, 1);
 
-		for(int i = bigHalf; i < players.size(); i++) {
-			if(players.size() % 2 == 0)
-				addJLabel(players.get(i).getName(), false, 20, Color.BLACK, -1, 1, 0, i, 2);
-			else
-				addJLabel(players.get(i).getName(), false, 20, Color.BLACK, -1, 1, 0, i+1, 2);
-		}
+		for(int i = bigHalf; i < players.size(); i++)
+			addJLabel(players.get(i).getName(), false, 40, Color.BLACK, 70, 1, 400/(players.size()-bigHalf), i-bigHalf, 2);
 
 	}
 	
 	private static void eggBonkReadyScreen(Player winner, Player loser) {
 	    //TODO display self (saved in this.name) and other bonker)
 	    //TODO ready button -> myClient.sendReady();
-		panel.setBackground(new Color(0xffddd4));
+		panel.setBackground(new Color(0xf56042));
 		addJLabel("YOUR EGG HAS BEEN CALLED TO BONK!", true, 40, Color.BLACK, -1, 3, 0, 1, 0);
-		addJLabel("Click the button when you are ready: ", false, 20, Color.BLACK, -1, 3, 0, 1, 1);
 		JButton readyButton = addButton("READY!", 3, 3, 2);
 		readyButton.addActionListener(new ActionListener() {
 			@Override
@@ -199,7 +194,7 @@ public class Gui {
 
 	
 	
-    private static void addJLabel(String text, boolean bold, int size, Color color, int ipy, int gw, double weightx, int x, int y) {
+    private static void addJLabel(String text, boolean bold, int size, Color color, int ipy, int gw, int ipx, int x, int y) {
     	JLabel label = new JLabel(text);
     	if(bold)
     		label.setFont(new Font("Futura", Font.BOLD, size));
@@ -209,7 +204,8 @@ public class Gui {
     	c.fill = GridBagConstraints.HORIZONTAL;
     	if(ipy != -1)
     		c.ipady = ipy;
-    	c.weightx = weightx;
+    	if(ipx != -1)
+    		c.ipadx = ipx;
     	c.gridwidth = gw;
     	c.gridx = x;
     	c.gridy = y;
