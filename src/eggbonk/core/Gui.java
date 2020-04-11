@@ -119,7 +119,7 @@ public class Gui {
         addJLabel("Waiting for players...", true, 20, Color.BLACK, -1, 3, 2, 0);
         
         for(int i = 0; i < players.size(); i++)
-            addJLabel(players.get(i).name, false, 20, Color.BLACK, -1, 3, 2, i+1);
+            addJLabel(players.get(i).getName(), false, 20, Color.BLACK, -1, 3, 2, i+1);
 	}
 	
 	private static void drawingScreen() {

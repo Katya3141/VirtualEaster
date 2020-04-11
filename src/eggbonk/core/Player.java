@@ -72,5 +72,8 @@ public class Player implements Serializable{
 				first.equals(o.first) &&
 				second.equals(o.second);
 	}
+	public String getName() {
+		return this.name;
+	}
 	
 }
