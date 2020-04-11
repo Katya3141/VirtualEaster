@@ -115,7 +115,7 @@ public class Server {
                 Player currentPlayer2 = currentIndex + 1 < players.size() ? players.get(currentIndex + 1) : players.get(0);
                 
                 // choose winner and loser
-                Player winner = (int) Math.random() == 0 ? currentPlayer1 : currentPlayer2;
+                Player winner = (int) (Math.random() * 2) == 0 ? currentPlayer1 : currentPlayer2;
                 Player loser = winner == currentPlayer1 ? currentPlayer2 : currentPlayer1;
 
                 // send state to client
