@@ -92,9 +92,27 @@ public class Server {
                 Thread.sleep(1000);
             }
             
+            int currentIndex = 0;
             while (players.size() > 1) {
-                //TODO choose loser and winner
-                out.writeUnshared(new GameState(GameState.Phase.TRANSITION, List.copyOf(players))); //TODO winner, loser
+                // choose which players are bonking
+                Player currentPlayer1 = players.get(currentIndex);
+                Player currentPlayer2 = currentIndex + 1 < players.size() ? players.get(currentIndex + 1) : players.get(0);
+                
+                // choose winner and loser
+                Player winner = (int) Math.random() == 0 ? currentPlayer1 : currentPlayer2;
+                Player loser = winner == currentPlayer1 ? currentPlayer2 : currentPlayer1;
+
+                // send state to client
+                out.writeUnshared(new GameState(GameState.Phase.TRANSITION, List.copyOf(players), winner, loser));
+                
+                // change index and remove loser if they got out
+                if (loser.isOut())
+                    players.remove(players.indexOf(loser));
+                else
+                    currentIndex++;
+                if (currentIndex >= players.size()) {
+                    currentIndex = 0;
+                }
             }
             
             out.writeUnshared(new GameState(GameState.Phase.TOTAL_VICTORY, List.copyOf(players)));
