@@ -113,7 +113,7 @@ public class Gui {
 	}
 	
 	private static void waitingScreen(List<Player> players) {
-	    panel.setBackground(Color.YELLOW);
+	    panel.setBackground(new Color(0xfff178));
 	    
         System.out.println(players);
         addJLabel("Waiting for players...", true, 20, Color.BLACK, -1, 3, 0, 2, 0);
@@ -152,17 +152,21 @@ public class Gui {
 			bigHalf = players.size() / 2;
 		
 		for(int i = 0; i < bigHalf; i++)
-			addJLabel(players.get(i).getName(), false, 40, Color.BLACK, -1, 1, 400/bigHalf, i, 1);
+			addJLabel(players.get(i).getName(), false, 40, Color.BLACK, 70, 1, 50, i * 2, 1);
 
-		for(int i = bigHalf; i < players.size(); i++)
-			addJLabel(players.get(i).getName(), false, 40, Color.BLACK, 70, 1, 400/(players.size()-bigHalf), i-bigHalf, 2);
+		for(int i = bigHalf; i < players.size(); i++) {
+			if(players.size() % 2 == 0)
+				addJLabel(players.get(i).getName(), false, 40, Color.BLACK, 70, 1, 50, (i-bigHalf) * 2, 2);
+			else
+				addJLabel(players.get(i).getName(), false, 40, Color.BLACK, 70, 1, 50, (i-bigHalf) * 2+1, 2);
+		}
 
 	}
 	
 	private static void eggBonkReadyScreen(Player winner, Player loser) {
 	    //TODO display self (saved in this.name) and other bonker)
 	    //TODO ready button -> myClient.sendReady();
-		panel.setBackground(new Color(0xf56042));
+		panel.setBackground(new Color(0xff9e91));
 		addJLabel("YOUR EGG HAS BEEN CALLED TO BONK!", true, 40, Color.BLACK, -1, 3, 0, 1, 0);
 		JButton readyButton = addButton("READY!", 3, 3, 2);
 		readyButton.addActionListener(new ActionListener() {
