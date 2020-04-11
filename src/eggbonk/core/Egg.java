@@ -86,7 +86,22 @@ public class Egg implements Serializable {
 	public boolean equals(Object other) {
 		if(!(other instanceof Egg)) return false;
 		Egg o = (Egg) other;
-		return damage == o.damage;
+		return damage == o.damage && equals(image, o.image);
+	}
+	
+	public boolean equals(BufferedImage a, BufferedImage b) {
+		if (a.getWidth() != b.getWidth() || a.getHeight() != b.getHeight())
+		    return false;
+
+		  int width  = a.getWidth();
+		  int height = a.getHeight();
+
+		  for (int y = 0; y < height; y++) 
+		    for (int x = 0; x < width; x++) 
+		      if (a.getRGB(x, y) != b.getRGB(x, y)) 
+		        return false;
+		      
+		  return true;
 	}
 	
 	
