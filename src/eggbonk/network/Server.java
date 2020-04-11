@@ -133,7 +133,13 @@ public class Server {
                     currentIndex = 0;
                 }
                 
-                // TODO set the state to BONKING when people are ready
+                // wait until the two bonkers are ready
+                if(!in.readObject().equals("ready")) throw new IOException();
+                if(!in.readObject().equals("ready")) throw new IOException();
+                
+                // set the state to bonking
+                out.writeUnshared(new GameState(GameState.Phase.BONKING, List.copyOf(players), winner, loser));
+
             }
             
             out.writeUnshared(new GameState(GameState.Phase.TOTAL_VICTORY, List.copyOf(players)));
