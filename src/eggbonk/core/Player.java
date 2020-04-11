@@ -9,6 +9,8 @@ import java.io.Serializable;
  * @author ianbulovic
  */
 public class Player implements Serializable{
+    
+    //TODO equals
 
 	private static final long serialVersionUID = -8258986605640084236L;
 	

@@ -4,10 +4,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.List;
 
-import eggbonk.core.gui;
-import eggbonk.core.Egg;
+import eggbonk.core.GameState;
+import eggbonk.core.Gui;
+import eggbonk.core.Gui.Screen;
 import eggbonk.core.Player;
 
 public class Client implements AutoCloseable {
@@ -15,7 +15,10 @@ public class Client implements AutoCloseable {
  //   private BufferedReader in;
     private ObjectInputStream in;
     private ObjectOutputStream out;
-    public List<Player> alreadyConnected;
+    
+    private GameState gameState;
+    
+    private Player me;
     
     /**
      * Make a Client and connect it to a server running on
@@ -30,12 +33,22 @@ public class Client implements AutoCloseable {
     }
     
     /**
-     * Send a request to the server. Requires this is "open".
-     * @param request request to send
+     * Send a new player to the server. Requires this is "open".
+     * @param player player to send
      * @throws IOException if network or server failure
      */
-    public void sendRequest(Player request) throws IOException {
-        out.writeObject(request);
+    public void sendPlayer(Player player) throws IOException {
+        out.writeObject(player);
+        out.flush(); // important! make sure x actually gets sent
+        me = player;
+    }
+    
+    /**
+     * Send ready message to the server. Requires this is "open".
+     * @throws IOException if network or server failure
+     */
+    public void sendReady() throws IOException {
+        out.writeObject("ready");
         out.flush(); // important! make sure x actually gets sent
     }
     
@@ -45,7 +58,7 @@ public class Client implements AutoCloseable {
      * @return square of requested number
      * @throws IOException if network or server failure
      */
-    public Object getReply() throws IOException {
+    public GameState getState() throws IOException {
         Object reply = null;
 		try {
 			reply = in.readObject();
@@ -55,11 +68,8 @@ public class Client implements AutoCloseable {
         if (reply == null) {
             throw new IOException("connection terminated unexpectedly");
         }
-        
-        if (reply.equals("err")) {
-            throw new IOException("server reported request error");
-        }
-        return reply;
+
+        return (GameState) reply;
     }
 
     /**
@@ -73,6 +83,37 @@ public class Client implements AutoCloseable {
         socket.close();
     }
     
+    public void startClient() throws IOException {
+        Gui.startGUI(this);
+ 
+        do {
+            gameState = getState();
+            Gui.switchToScreen(Gui.Screen.WAITING, gameState);
+
+        } while(gameState.getPhase() == GameState.Phase.SETUP);
+
+        
+        do {
+            if (gameState.getWinner().equals(me) || gameState.getLoser().equals(me))
+                Gui.switchToScreen(Screen.EGG_BONK_READY, gameState);
+            else
+                Gui.switchToScreen(Screen.EGG_BONK_SETUP, gameState);
+            
+            // wait until bonkers are ready
+            while(gameState.getPhase() != GameState.Phase.BONKING) { gameState = getState(); }
+            Gui.switchToScreen(Screen.EGG_BONK_ANIMATION, gameState);
+            
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            
+        } while (gameState.getPhase() != GameState.Phase.TOTAL_VICTORY);
+        
+        Gui.switchToScreen(Screen.FINAL_RESULT, gameState);
+    }
+    
     
     /**
      * Use a Client to open the GUI and communicate with the server.
@@ -80,27 +121,9 @@ public class Client implements AutoCloseable {
      */
     public static void main(String[] args) {
         try (
-                Client client = new Client("localhost", 1234);
+                Client client = new Client("98.229.165.182", 1234);
         ) {
-            String name = gui.startGUI();
-            System.out.println("got the name " + name);
-            
-            	client.sendRequest(new Player(name, new Egg(), new Egg()));
-//            
-            while(true) {
-//                // get the reply
-            		try {
-            			@SuppressWarnings("unchecked")
-					List<Player> alreadyConnected = (List<Player>) client.getReply(); 
-            			gui.players = alreadyConnected;
-            			gui.waitingScreen();
-            			System.out.println("Already connected: " + alreadyConnected);
-            		} catch (ClassCastException e) {
-            			System.err.println("data recieved from server was not of type List<Player>");
-            		}
-                
-                
-            }
+            client.startClient();
             
         } catch (IOException ioe) {
             ioe.printStackTrace();

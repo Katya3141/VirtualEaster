@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 import eggbonk.core.Game;
+import eggbonk.core.GameState;
 import eggbonk.core.Player;
 
 
@@ -82,14 +83,22 @@ public class Server {
             players.add(player);
             
             // wait until everyone has connected
-            while (players.size() < NUM_PLAYERS) {
+            while (players.size() < NUM_PLAYERS) {  // TODO change this condition
             		if (currentPlayerNum != players.size()) {
-            			out.writeUnshared(players);
+            			out.writeUnshared(new GameState(GameState.Phase.SETUP, List.copyOf(players)));
             			out.flush();
             			currentPlayerNum = players.size();
             		}
                 Thread.sleep(1000);
             }
+            
+            while (players.size() > 1) {
+                //TODO choose loser and winner
+                out.writeUnshared(new GameState(GameState.Phase.TRANSITION, List.copyOf(players))); //TODO winner, loser
+            }
+            
+            out.writeUnshared(new GameState(GameState.Phase.TOTAL_VICTORY, List.copyOf(players)));
+            
         } catch (ClassNotFoundException | ClassCastException e) {
         		System.err.println("input from client was not of the expected type"); // see comment about exception above
 			e.printStackTrace();
