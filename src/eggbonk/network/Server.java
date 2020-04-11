@@ -7,6 +7,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import java.util.List;
+import java.util.Scanner;
 import java.util.ArrayList;
 
 import eggbonk.core.Game;
@@ -19,6 +20,8 @@ public class Server {
     public static final int PORT = 1234;
     static final int NUM_PLAYERS = 3;
     static Game game;
+    
+    private static boolean waitingForPlayers = true;
     
     static List<Player> players = new ArrayList<Player>();
     
@@ -39,6 +42,19 @@ public class Server {
      */
     public void serve() throws IOException {
         System.err.println("serving");
+        
+        new Thread(() -> {
+        	System.out.println("Type \"ready\" when everyone's in, or \"l\" to list the current players: ");
+        	Scanner console = new Scanner(System.in);
+        	String l;
+        	while(!(l = console.nextLine()).equals("ready")) {
+        		if(l.equals("l")) {
+        			System.out.println(players + " (" + players.size() + " players total)");
+        		}
+        	}
+        	console.close();
+        	waitingForPlayers = false;
+        }).start();
 
         while (true) {
             // block until a client connects
@@ -83,7 +99,7 @@ public class Server {
             players.add(player);
             
             // wait until everyone has connected
-            while (players.size() < NUM_PLAYERS) {  // TODO change this condition
+            while (waitingForPlayers) {  
             		if (currentPlayerNum != players.size()) {
             			out.writeUnshared(new GameState(GameState.Phase.SETUP, List.copyOf(players)));
             			out.flush();
@@ -105,14 +121,19 @@ public class Server {
                 // send state to client
                 out.writeUnshared(new GameState(GameState.Phase.TRANSITION, List.copyOf(players), winner, loser));
                 
+                //crack the loser's egg
+                loser.currentEgg().crack();
+                
                 // change index and remove loser if they got out
-                if (loser.isOut())
+                if (loser.isOut()) {
                     players.remove(players.indexOf(loser));
-                else
+                } else
                     currentIndex++;
                 if (currentIndex >= players.size()) {
                     currentIndex = 0;
                 }
+                
+                // TODO set the state to BONKING when people are ready
             }
             
             out.writeUnshared(new GameState(GameState.Phase.TOTAL_VICTORY, List.copyOf(players)));
