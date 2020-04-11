@@ -148,6 +148,21 @@ public class Gui {
 	private static void eggBonkReadyScreen(Player winner, Player loser) {
 	    //TODO display self (saved in this.name) and other bonker)
 	    //TODO ready button -> myClient.sendReady();
+		panel.setBackground(new Color(0xffddd4));
+		addJLabel("YOUR EGG HAS BEEN CALLED TO BONK!", true, 40, Color.BLACK, -1, 3, 1, 0);
+		addJLabel("Click the button when you are ready: ", true, 20, Color.BLACK, -1, 3, 1, 1);
+		JButton readyButton = addButton("READY!", 3, 3, 2);
+		readyButton.addActionListener(new ActionListener() {
+			@Override
+            public void actionPerformed(ActionEvent arg0) {
+                try {
+                    readyButton.setEnabled(false);
+                		myClient.sendReady();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+		});
 	}
 	
 	private static void eggBonkAnimationScreen(GameState gameState) {
