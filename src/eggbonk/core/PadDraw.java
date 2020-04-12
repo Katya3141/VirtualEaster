@@ -93,11 +93,35 @@ class PadDraw extends JComponent{
         repaint();
     }
     //magenta paint
+    public void lightBlue(){
+        graphics2D.setPaint(new Color(138, 239, 255));
+        repaint();
+    }
+    //blue paint
+    public void lightGreen(){
+        graphics2D.setPaint(new Color(202, 255, 138));
+        repaint();
+    }
+    //green paint 
+    
+    public void paleYellow(){
+        graphics2D.setPaint(new Color(255, 240, 122));
+        repaint();
+    }
+    //yellow paint
+    
+    public void pink(){
+        graphics2D.setPaint(new Color(255, 171, 255));
+        repaint();
+    }
+    //pink paint
+    
     public void blue(){
         graphics2D.setPaint(Color.blue);
         repaint();
     }
     //blue paint
+    
     public void green(){
         graphics2D.setPaint(Color.green);
         repaint();

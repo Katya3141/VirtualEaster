@@ -139,14 +139,126 @@ public class Gui {
 	    //System.out.println(frame.getComponents());
 	    Container content = frame.getContentPane();
 	    //Creates a new container
-	    content.setLayout(new BorderLayout());
 	    //sets the layout
+	    content.setLayout(new BorderLayout(100, 100));
 
-	    final PadDraw drawPad = new PadDraw();
+	    final PadDraw drawPad1 = new PadDraw();
+	    final PadDraw drawPad2 = new PadDraw();
 	    //creates a new padDraw, which is pretty much the paint program
+	    
+	    drawPad1.setPreferredSize(new Dimension(600, 600));
+	    drawPad1.setBorder(BorderFactory.createMatteBorder(10, 10, 10, 10, Color.pink)); // inner border
+	    drawPad2.setPreferredSize(new Dimension(600, 600));
+	    drawPad2.setBorder(BorderFactory.createMatteBorder(10, 10, 10, 10, Color.pink)); // inner border
 
-	    content.add(drawPad, BorderLayout.CENTER);
-	    //sets the padDraw in the center
+	    content.add(drawPad1, BorderLayout.WEST);
+	    content.add(drawPad2, BorderLayout.EAST);
+	    
+	    JPanel buttonPanel = new JPanel();
+	    JButton red = new JButton("red");
+	    JButton black = new JButton("black");
+	    JButton magenta = new JButton("magenta");
+	    JButton blue = new JButton("blue");
+	    JButton green = new JButton("green");
+	    JButton pink = new JButton("pink");
+	    JButton yellow = new JButton("yellow");
+	    JButton lightBlue = new JButton("light blue");
+	    JButton lightGreen = new JButton("light green");
+	    
+	    buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
+	    
+	    red.addActionListener(new ActionListener() {
+
+	        @Override
+	        public void actionPerformed(ActionEvent event) {
+	            drawPad1.red();
+	            drawPad2.red();
+	        }
+	    });
+	    
+        black.addActionListener(new ActionListener() {
+    
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                drawPad1.black();
+                drawPad2.black();
+            }
+        });
+       
+        magenta.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                drawPad1.magenta();
+                drawPad2.magenta();
+            }
+        });
+       
+        blue.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                drawPad1.blue();
+                drawPad2.blue();
+            }
+        });
+        
+        green.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                drawPad1.green();
+                drawPad2.green();
+            }
+        });
+        
+        pink.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                drawPad1.pink();
+                drawPad2.pink();
+            }
+        });
+        
+        yellow.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                drawPad1.paleYellow();
+                drawPad2.paleYellow();
+            }
+        });
+        
+        lightBlue.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                drawPad1.lightBlue();
+                drawPad2.lightBlue();
+            }
+        });
+        
+        lightGreen.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                drawPad1.lightGreen();
+                drawPad2.lightGreen();
+            }
+        });
+	    
+	    buttonPanel.add(red);
+	    buttonPanel.add(black);
+	    buttonPanel.add(magenta);
+	    buttonPanel.add(blue);
+	    buttonPanel.add(green);
+	    buttonPanel.add(yellow);
+	    buttonPanel.add(pink);
+	    buttonPanel.add(lightBlue);
+	    buttonPanel.add(lightGreen);
+	    
+	    content.add(buttonPanel, BorderLayout.CENTER);
 	    
 	    JButton done = new JButton("Done coloring!");
 	    
@@ -164,7 +276,7 @@ public class Gui {
                 frame.add(panel);
                 frame.setPreferredSize(screenSize);
                 try {
-                    myClient.sendPlayer(new Player(name, new Egg(drawPad.getImage()), new Egg(drawPad.getImage())));
+                    myClient.sendPlayer(new Player(name, new Egg(drawPad1.getImage()), new Egg(drawPad2.getImage())));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
