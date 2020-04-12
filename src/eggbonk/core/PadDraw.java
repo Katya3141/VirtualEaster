@@ -8,7 +8,10 @@ import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 
 class PadDraw extends JComponent{
@@ -52,10 +55,15 @@ class PadDraw extends JComponent{
     @Override
     public void paintComponent(Graphics g){
         if(image == null){
-            image = createImage(getSize().width, getSize().height);
+            try {
+                image = ImageIO.read(new File("default-egg.png"));
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
             graphics2D = (Graphics2D)image.getGraphics();
             graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            clear();
+            //clear();
 
         }
         g.drawImage(image, 0, 0, null);
@@ -68,12 +76,12 @@ class PadDraw extends JComponent{
     //runs the clear() method
     //then it draws the image
 
-    public void clear(){
-        graphics2D.setPaint(Color.white);
-        graphics2D.fillRect(0, 0, getSize().width, getSize().height);
-        graphics2D.setPaint(Color.black);
-        repaint();
-    }
+    //public void clear(){
+    //    graphics2D.setPaint(Color.white);
+    //    graphics2D.fillRect(0, 0, getSize().width, getSize().height);
+    //    graphics2D.setPaint(Color.black);
+    //    repaint();
+    //}
     //this is the clear
     //it sets the colors as white
     //then it fills the window with white
