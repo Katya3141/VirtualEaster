@@ -196,6 +196,8 @@ public class Gui {
 		BufferedImage a, b;
 		GameState gameState;
 		int up;
+		int aX, bX;
+		int velX = 1;
 
 		AnimationPanel(BufferedImage a, BufferedImage b, GameState gameState, int up) {
 			super();
@@ -207,6 +209,8 @@ public class Gui {
 			this.gameState = gameState;
 			this.up = up;
 			setVisible(true);
+			aX = 0;
+			bX = screenSize.width - b.getWidth();
 		}
 
 		@Override
@@ -223,8 +227,19 @@ public class Gui {
 				g.drawString(this.gameState.getWinner().getName(), screenSize.width/2, screenSize.height/10 * 9);
 			}
 			g.drawString("VS", screenSize.width/2, screenSize.height/2);
-			g.drawImage(a, 0, (screenSize.height / 2) - (a.getHeight() / 2), this);
-			g.drawImage(b, screenSize.width - b.getWidth(), (screenSize.height / 2) - (b.getHeight() / 2), this);
+			
+			
+			g.drawImage(a, aX, (screenSize.height / 2) - (a.getHeight() / 2), this);
+			g.drawImage(b, bX, (screenSize.height / 2) - (b.getHeight() / 2), this);
+			if(aX < screenSize.width / 3 - 10) {
+				aX += 3;
+				bX -= 3;
+				this.repaint();
+			}
+			else {
+				frame.remove(this);
+				Gui.switchToScreen(Screen.EGG_BONK_RESULT, gameState);
+			}
 		}
 	}
 
@@ -275,13 +290,15 @@ public class Gui {
 		// zooom them at each other
 		// KAPOW
 
-		Gui.switchToScreen(Screen.EGG_BONK_RESULT, gameState);
+		//Gui.switchToScreen(Screen.EGG_BONK_RESULT, gameState);
 	}
 
 	private static void eggBonkResultScreen(Player winner, Player loser) {
 		//TODO display the results
+		frame.add(panel);
 		addJLabel(loser.getName() + " CRACKED, " + winner.getName() + " WINS!", true, 50, new Color(0x4287f5), 40, 3, 0, 0, 0);
 		JLabel winnerLabel = new JLabel(new ImageIcon(winner.currentEgg().getImage()));
+		panel.add(winnerLabel);
 		c.gridx = 0; c.gridy = 1;
 		panel.add(winnerLabel, c);
 	}
