@@ -68,5 +68,6 @@ public class Game {
 		}
 		if(!someoneOut)
 		    currentPlayer = (currentPlayer + 1) % players.size();
+		currentPlayer %= players.size();
 	}
 }
