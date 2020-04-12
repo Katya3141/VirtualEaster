@@ -164,7 +164,7 @@ public class Gui {
                 frame.add(panel);
                 frame.setPreferredSize(screenSize);
                 try {
-                    myClient.sendPlayer(new Player(name, new Egg(), new Egg()));
+                    myClient.sendPlayer(new Player(name, new Egg(drawPad.getImage()), new Egg(drawPad.getImage())));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
