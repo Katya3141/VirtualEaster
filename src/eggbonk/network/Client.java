@@ -101,6 +101,7 @@ public class Client implements AutoCloseable {
             // wait until bonkers are ready
             while(gameState.getPhase() != GameState.Phase.BONKING) { gameState = getState(); }
             Gui.switchToScreen(Screen.EGG_BONK_ANIMATION, gameState);
+            gameState = getState();
             
             try {
                 Thread.sleep(5000);
