@@ -53,6 +53,15 @@ public class Client implements AutoCloseable {
     }
     
     /**
+     * Send UNready message to the server. Requires this is "open".
+     * @throws IOException if network or server failure
+     */
+    public void sendUnReady() throws IOException {
+        out.writeObject("not ready");
+        out.flush(); // important! make sure x actually gets sent
+    }
+    
+    /**
      * Get a reply from the next request that was submitted.
      * Requires this is "open".
      * @return square of requested number
@@ -101,7 +110,6 @@ public class Client implements AutoCloseable {
             // wait until bonkers are ready
             while(gameState.getPhase() != GameState.Phase.BONKING) { gameState = getState(); }
             Gui.switchToScreen(Screen.EGG_BONK_ANIMATION, gameState);
-            gameState = getState();
             
             try {
                 Thread.sleep(5000);
@@ -109,6 +117,7 @@ public class Client implements AutoCloseable {
                 e.printStackTrace();
             }
             
+            gameState = getState();
         } while (gameState.getPhase() != GameState.Phase.TOTAL_VICTORY);
         
         Gui.switchToScreen(Screen.FINAL_RESULT, gameState);
@@ -121,7 +130,7 @@ public class Client implements AutoCloseable {
      */
     public static void main(String[] args) {
         try (
-                Client client = new Client("192.168.2.82", 1234); // katya: 192.168.2.82
+                Client client = new Client("192.168.2.245", 1234); // katya: 192.168.2.82
         ) {
             client.startClient();
             

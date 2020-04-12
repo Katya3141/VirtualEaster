@@ -274,7 +274,7 @@ public class Gui {
                 frame.setPreferredSize(screenSize);
                 try {
 
-                    myClient.sendPlayer(new Player(name, new Egg(eggPad1.getImage()), new Egg(eggPad1.getImage())));
+                    myClient.sendPlayer(new Player(name, new Egg(eggPad2.getImage()), new Egg(eggPad1.getImage())));
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -285,6 +285,12 @@ public class Gui {
 	}
 
 	private static void eggBonkSetupScreen(List<Player> players) {
+	    try {
+            myClient.sendUnReady();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+	    
 		panel.setBackground(new Color(0xfae6be));
 
 		int bigHalf;
