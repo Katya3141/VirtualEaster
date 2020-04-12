@@ -256,6 +256,8 @@ public class Gui {
 	    //sets the padDraw in the east
 	    
 	    JButton done = new JButton("Done coloring!");
+	    done.setFont(new Font("Futura", Font.PLAIN, 40));
+	    done.setPreferredSize(new Dimension(100, 100));
 	    
 	    drawPanel.add(done, BorderLayout.SOUTH);
 	    

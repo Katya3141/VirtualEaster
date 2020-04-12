@@ -1,5 +1,6 @@
 package eggbonk.core;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -29,7 +30,7 @@ class PadDraw extends JComponent{
             @Override
             public void mousePressed(MouseEvent e){
                 oldX = e.getX();
-                oldY = e.getY();
+                oldY = e.getY() - 50;
             }
         });
         //if the mouse is pressed it sets the oldX & oldY
@@ -38,7 +39,7 @@ class PadDraw extends JComponent{
             @Override
             public void mouseDragged(MouseEvent e){
                 currentX = e.getX();
-                currentY = e.getY();
+                currentY = e.getY() - 50;
                 if(graphics2D != null)
                     graphics2D.drawLine(oldX, oldY, currentX, currentY);
                 repaint();
@@ -62,11 +63,12 @@ class PadDraw extends JComponent{
                 e.printStackTrace();
             }
             graphics2D = (Graphics2D)image.getGraphics();
+            graphics2D.setStroke(new BasicStroke(10));
             graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             //clear();
 
         }
-        g.drawImage(image, 0, 0, null);
+        g.drawImage(image, 0, 50, null);
     }
     //this is the painting bit
     //if it has nothing on it then
