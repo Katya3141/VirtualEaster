@@ -129,16 +129,130 @@ public class Gui {
 	    frame.remove(panel);
 	    
 	    JPanel drawPanel = new JPanel();
-	    //Creates a new container
-	    drawPanel.setLayout(new BorderLayout());
-	    //sets the layout
+
+	    drawPanel.setLayout(new BorderLayout(120, 100));
+
 
 	    final PadDraw eggPad1 = new PadDraw();
 	    eggPad1.setPreferredSize(new Dimension(700,300));
 	    final PadDraw eggPad2 = new PadDraw();
+
 	    //creates a new padDraw, which is pretty much the paint program
+	    
+	    eggPad1.setPreferredSize(new Dimension(600, 600));
+	    eggPad1.setBorder(BorderFactory.createMatteBorder(10, 10, 10, 10, Color.pink)); // inner border
+	    eggPad2.setPreferredSize(new Dimension(600, 600));
+	    eggPad2.setBorder(BorderFactory.createMatteBorder(10, 10, 10, 10, Color.pink)); // inner border
+
+	    
+	    JPanel buttonPanel = new JPanel();
+	    JButton black = new JButton("black");
+	    JButton red = new JButton("red");
+	    JButton magenta = new JButton("magenta");
+	    JButton blue = new JButton("blue");
+	    JButton green = new JButton("green");
+	    JButton pink = new JButton("pink");
+	    JButton yellow = new JButton("yellow");
+	    JButton lightBlue = new JButton("light blue");
+	    JButton lightGreen = new JButton("light green");
+	    
+	    buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
+	    
+	    red.addActionListener(new ActionListener() {
+
+	        @Override
+	        public void actionPerformed(ActionEvent event) {
+	            eggPad1.red();
+	            eggPad2.red();
+	        }
+	    });
+	    
+        black.addActionListener(new ActionListener() {
+    
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                eggPad1.black();
+                eggPad2.black();
+            }
+        });
+       
+        magenta.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                eggPad1.magenta();
+                eggPad2.magenta();
+            }
+        });
+       
+        blue.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                eggPad1.blue();
+                eggPad2.blue();
+            }
+        });
+        
+        green.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                eggPad1.green();
+                eggPad2.green();
+            }
+        });
+        
+        pink.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                eggPad1.pink();
+                eggPad2.pink();
+            }
+        });
+        
+        yellow.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                eggPad1.paleYellow();
+                eggPad2.paleYellow();
+            }
+        });
+        
+        lightBlue.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                eggPad1.lightBlue();
+                eggPad2.lightBlue();
+            }
+        });
+        
+        lightGreen.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                eggPad1.lightGreen();
+                eggPad2.lightGreen();
+            }
+        });
+	    
+	    buttonPanel.add(red);
+	    buttonPanel.add(black);
+	    buttonPanel.add(magenta);
+	    buttonPanel.add(blue);
+	    buttonPanel.add(green);
+	    buttonPanel.add(yellow);
+	    buttonPanel.add(pink);
+	    buttonPanel.add(lightBlue);
+	    buttonPanel.add(lightGreen);
+	    
+	    drawPanel.add(buttonPanel, BorderLayout.CENTER);
 
 	    drawPanel.add(eggPad1, BorderLayout.EAST);
+	    drawPanel.add(eggPad2, BorderLayout.WEST);
 	    //sets the padDraw in the east
 	    
 	    JButton done = new JButton("Done coloring!");
@@ -159,7 +273,9 @@ public class Gui {
                 frame.add(panel);
                 frame.setPreferredSize(screenSize);
                 try {
+
                     myClient.sendPlayer(new Player(name, new Egg(eggPad1.getImage()), new Egg(eggPad1.getImage())));
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -282,37 +398,11 @@ public class Gui {
 		JPanel animationPanel = new AnimationPanel(a, b, gameState, up);
 		frame.add(animationPanel);
 
-
-
-		//TODO do the animation
-
-		/*
-	    SwingTimerTimingSource animationTimer = new SwingTimerTimingSource();
-	    animationTimer.init();
-
-	    a.animator = new Animator.Builder(animationTimer).setDuration(2, SECONDS).setDisposeTimingSource(true).build();
-	    b.animator = new Animator.Builder(animationTimer).setDuration(2, SECONDS).setDisposeTimingSource(true).build();
-
-	    Point target = new Point(panel.getWidth() / 2, panel.getHeight() / 2);
-
-	    a.animator.addTarget(PropertySetter.getTargetTo(a, "location", new AccelerationInterpolator(0.5,0.5), target));
-	    b.animator.addTarget(PropertySetter.getTargetTo(b, "location", new AccelerationInterpolator(0.5,0.5), target));
-
-	    a.animator.start();
-	    b.animator.start();
-		 */
-
-		// display a on the left
-		// display b on the right
-		// zooom them at each other
-		// KAPOW
-
-		//Gui.switchToScreen(Screen.EGG_BONK_RESULT, gameState);
 	}
 
 	private static void eggBonkResultScreen(Player winner, Player loser) {
 		//TODO display the results
-		frame.add(panel);
+		panel.setVisible(true);
 		addJLabel(loser.getName() + " CRACKED, " + winner.getName() + " WINS!", true, 50, new Color(0x4287f5), 40, 3, 0, 0, 0);
 		JLabel winnerLabel = new JLabel(new ImageIcon(winner.currentEgg().getImage()));
 		panel.add(winnerLabel);
