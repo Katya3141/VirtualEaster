@@ -1,26 +1,17 @@
 package eggbonk.core;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.List;
-import static java.util.concurrent.TimeUnit.SECONDS;
-
-import org.jdesktop.core.animation.timing.Animator;
-import org.jdesktop.core.animation.timing.PropertySetter;
-import org.jdesktop.core.animation.timing.interpolators.AccelerationInterpolator;
-import org.jdesktop.swing.animation.timing.sources.SwingTimerTimingSource;
 
 import javax.swing.*;
 
@@ -136,25 +127,27 @@ public class Gui {
 
 	private static void drawingScreen() {
 	    frame.remove(panel);
-	    //System.out.println(frame.getComponents());
-	    Container content = frame.getContentPane();
+	    
+	    JPanel drawPanel = new JPanel();
 	    //Creates a new container
-	    content.setLayout(null);
+	    drawPanel.setLayout(new BorderLayout());
 	    //sets the layout
 
 	    final PadDraw eggPad1 = new PadDraw();
-	    eggPad1.setPreferredSize(new Dimension(300,300));
+	    eggPad1.setPreferredSize(new Dimension(700,300));
 	    final PadDraw eggPad2 = new PadDraw();
 	    //creates a new padDraw, which is pretty much the paint program
 
-	    content.add(eggPad1, 100, 100);
+	    drawPanel.add(eggPad1, BorderLayout.EAST);
 	    //sets the padDraw in the east
 	    
 	    JButton done = new JButton("Done coloring!");
 	    
-	    content.add(done, BorderLayout.SOUTH);
+	    drawPanel.add(done, BorderLayout.SOUTH);
 	    
-	    content.setPreferredSize(screenSize);
+	    drawPanel.setPreferredSize(screenSize);
+	    
+	    frame.add(drawPanel);
 	    
 	    //button: done with drawing on eggs -> myClient.sendPlayer(new Player(name, egg1, egg2));
 	    
@@ -162,11 +155,11 @@ public class Gui {
         done.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                frame.setContentPane(new Container());
+                frame.remove(drawPanel);
                 frame.add(panel);
                 frame.setPreferredSize(screenSize);
                 try {
-                    myClient.sendPlayer(new Player(name, new Egg(drawPad.getImage()), new Egg(drawPad.getImage())));
+                    myClient.sendPlayer(new Player(name, new Egg(eggPad1.getImage()), new Egg(eggPad1.getImage())));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
