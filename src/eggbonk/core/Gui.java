@@ -142,7 +142,6 @@ public class Gui {
 	}
 	
 	private static void eggBonkSetupScreen(List<Player> players) {
-	    //TODO setup screen
 		panel.setBackground(new Color(0xfae6be));
 
 		int bigHalf;
@@ -164,8 +163,6 @@ public class Gui {
 	}
 	
 	private static void eggBonkReadyScreen(Player winner, Player loser) {
-	    //TODO display self (saved in this.name) and other bonker)
-	    //TODO ready button -> myClient.sendReady();
 		panel.setBackground(new Color(0xff9e91));
 		addJLabel("YOUR EGG HAS BEEN CALLED TO BONK!", true, 40, Color.BLACK, -1, 3, 0, 1, 0);
 		JButton readyButton = addButton("READY!", 3, 3, 2);
@@ -193,10 +190,11 @@ public class Gui {
 	}
 	
 	private static void finalResultScreen(Player winner) {
-	    addJLabel("THE EGG BONK CHAMPION 2020 IS", false, 20, new Color(0x4287f5), 40, 3, 0, 0, 0);
-        addJLabel(winner.getName(), true, 50, new Color(0x4287f5), 40, 3, 0, 0, 1);
+        addJLabel(winner.getName() + " WINS EGG BONK 2020!", true, 50, new Color(0x4287f5), 40, 3, 0, 0, 1);
+        JLabel picLabelWinner = new JLabel(new ImageIcon(winner.currentEgg().getImage()));
+        c.gridx = 0; c.gridy = 2;
+        panel.add(picLabelWinner, c);
         
-        //TODO display egg pictures?
 	}
 
 	

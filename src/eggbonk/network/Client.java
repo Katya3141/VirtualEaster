@@ -92,7 +92,6 @@ public class Client implements AutoCloseable {
 
         } while(gameState.getPhase() == GameState.Phase.SETUP);
 
-        
         do {
             if (gameState.getWinner().equals(me) || gameState.getLoser().equals(me))
                 Gui.switchToScreen(Screen.EGG_BONK_READY, gameState);

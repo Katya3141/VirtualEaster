@@ -95,9 +95,9 @@ public class Server {
         try {
             Player player = (Player) in.readObject(); // exception here if client sends incorrect data type
             int currentPlayerNum = players.size();
-
-            players.add(player);
             
+            players.add(player);
+
             // wait until everyone has connected
             while (waitingForPlayers) {  
             		if (currentPlayerNum != players.size()) {
