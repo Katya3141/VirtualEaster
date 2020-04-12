@@ -113,14 +113,16 @@ public class Server {
 					e.printStackTrace();
 				}
 			}
-			
-			System.err.println("removing players who are out...");
-			// remove potential out player from the list
-			game.removeExtraneousPlayers();
 	
 			System.err.println("sending clients bonking state...");
 			// send the client an updated state saying you can animate now
-			gameState = new GameState(BONKING, players, winner, loser);
+			gameState = new GameState(BONKING, List.copyOf(players), new Player(winner), new Player(loser));
+			
+			System.err.println("removing players who are out...");
+            //crack a egg
+			loser.currentEgg().crack();
+			// remove potential out player from the list
+            game.removeExtraneousPlayers();
 			
 			System.err.println("waiting for animations...");
 			// wait for animation
@@ -134,7 +136,7 @@ public class Server {
 		// end loop
 		}
 		System.err.println("game is over!");
-		gameState = new GameState(TOTAL_VICTORY, players);
+		gameState = new GameState(TOTAL_VICTORY, List.copyOf(players));
 	
 	}
 

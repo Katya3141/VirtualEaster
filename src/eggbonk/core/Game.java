@@ -28,9 +28,6 @@ public class Game {
 		
 		Player winner = bonk(player1, player2);
 		
-		if(!player1.isOut() && !player2.isOut())
-			currentPlayer = (currentPlayer + 1) % players.size();
-		
 		return winner;
 		
 	}
@@ -48,11 +45,9 @@ public class Game {
 		if(b.currentEgg() == null) throw new IllegalArgumentException("player " + b + " has no eggs left to bonk!");
 		int loserIdx = (int)(Math.random() * 2);
 		if(loserIdx == 0) {
-			a.currentEgg().crack();
 			this.loser = a;
 			return b;
 		} else {
-			b.currentEgg().crack();
 			this.loser = b;
 			return a;
 		}
@@ -66,6 +61,7 @@ public class Game {
 		for(int i = 0; i < players.size(); i++) {
 			if(players.get(i).isOut()) {
 				players.remove(i);
+				currentPlayer = (currentPlayer + 1) % players.size();
 				i--;
 			}
 		}

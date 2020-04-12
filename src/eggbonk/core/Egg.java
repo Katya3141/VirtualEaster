@@ -39,6 +39,11 @@ public class Egg implements Serializable {
 		}
 	}
 	
+	public Egg(Egg other) {
+	    this.image = other.getImage();
+	    this.damage = other.getDamage();
+	}
+	
 	 /**
      * Creates an undamaged egg with specified image.
      */

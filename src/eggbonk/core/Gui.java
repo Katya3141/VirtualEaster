@@ -400,6 +400,9 @@ public class Gui {
 			b = gameState.getWinner().currentEgg().getImage();
 			up = 1;
 		}
+		System.out.println("EGG INFO for: " + gameState.getLoser().getName());
+        System.out.println(gameState.getLoser().currentEgg().getDamage() + " " + gameState.getLoser().currentEgg().isBroken());
+        System.out.println(gameState.getLoser().backupEgg().getDamage() + " " + gameState.getLoser().backupEgg().isBroken());
 
 		JPanel animationPanel = new AnimationPanel(a, b, gameState, up);
 		frame.add(animationPanel);

@@ -27,6 +27,12 @@ public class Player implements Serializable{
 		this.second = second;
 	}
 	
+	public Player(Player other) {
+	    this.name = other.name;
+	    this.first = new Egg(other.first);
+	    this.second = new Egg(other.second);
+	}
+	
 	/**
 	 * Gets the current egg of this Player. The current egg is the first egg in their
 	 * possession that is not completely broken. 
