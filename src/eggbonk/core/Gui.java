@@ -98,9 +98,9 @@ public class Gui {
 	
 	private static void startScreen() {
 	  //add JLabels to panel
-        addJLabel("WELCOME TO", false, 20, new Color(0x4287f5), 40, 3, 0, 0);
-        addJLabel("VIRTUAL EASTER 2020", true, 50, new Color(0x4287f5), 40, 3, 0, 1);
-        addJLabel("To get started, enter your name: ", false, 20, new Color(0xfaa0fa), -1, 4, 0, 3);
+        addJLabel("WELCOME TO", false, 20, new Color(0x4287f5), 40, 3, 0, 0, 0);
+        addJLabel("VIRTUAL EASTER 2020", true, 50, new Color(0x4287f5), 40, 3, 0, 0, 1);
+        addJLabel("To get started, enter your name: ", false, 20, new Color(0xfaa0fa), -1, 4, 0, 0, 3);
 
         //Text field to enter name
         JTextField text = addTextField("E.B.", 4, 0, 4);
@@ -122,13 +122,13 @@ public class Gui {
 	}
 	
 	private static void waitingScreen(List<Player> players) {
-	    panel.setBackground(Color.YELLOW);
+	    panel.setBackground(new Color(0xfff178));
 	    
         System.out.println(players);
-        addJLabel("Waiting for players...", true, 20, Color.BLACK, -1, 3, 2, 0);
+        addJLabel("Waiting for players...", true, 20, Color.BLACK, -1, 3, 0, 2, 0);
         
         for(int i = 0; i < players.size(); i++)
-            addJLabel(players.get(i).getName(), false, 20, Color.BLACK, -1, 3, 2, i+1);
+            addJLabel(players.get(i).getName(), false, 20, Color.BLACK, -1, 3, 0, 2, i+1);
 	}
 	
 	private static void drawingScreen() {
@@ -152,14 +152,31 @@ public class Gui {
 	
 	private static void eggBonkSetupScreen(List<Player> players) {
 	    //TODO setup screen
+		panel.setBackground(new Color(0xfae6be));
+
+		int bigHalf;
+		if(players.size() % 2 == 1)
+			bigHalf = (int)(players.size() / 2) + 1;
+		else
+			bigHalf = players.size() / 2;
+		
+		for(int i = 0; i < bigHalf; i++)
+			addJLabel(players.get(i).getName(), false, 40, Color.BLACK, 70, 1, 50, i * 2, 1);
+
+		for(int i = bigHalf; i < players.size(); i++) {
+			if(players.size() % 2 == 0)
+				addJLabel(players.get(i).getName(), false, 40, Color.BLACK, 70, 1, 50, (i-bigHalf) * 2, 2);
+			else
+				addJLabel(players.get(i).getName(), false, 40, Color.BLACK, 70, 1, 50, (i-bigHalf) * 2+1, 2);
+		}
+
 	}
 	
 	private static void eggBonkReadyScreen(Player winner, Player loser) {
 	    //TODO display self (saved in this.name) and other bonker)
 	    //TODO ready button -> myClient.sendReady();
-		panel.setBackground(new Color(0xffddd4));
-		addJLabel("YOUR EGG HAS BEEN CALLED TO BONK!", true, 40, Color.BLACK, -1, 3, 1, 0);
-		addJLabel("Click the button when you are ready: ", true, 20, Color.BLACK, -1, 3, 1, 1);
+		panel.setBackground(new Color(0xff9e91));
+		addJLabel("YOUR EGG HAS BEEN CALLED TO BONK!", true, 40, Color.BLACK, -1, 3, 0, 1, 0);
 		JButton readyButton = addButton("READY!", 3, 3, 2);
 		readyButton.addActionListener(new ActionListener() {
 			@Override
@@ -250,12 +267,15 @@ public class Gui {
 	}
 	
 	private static void finalResultScreen(Player winner) {
-	    //TODO display the winner
+	    addJLabel("THE EGG BONK CHAMPION 2020 IS", false, 20, new Color(0x4287f5), 40, 3, 0, 0, 0);
+        addJLabel(winner.getName(), true, 50, new Color(0x4287f5), 40, 3, 0, 0, 1);
+        
+        //TODO display egg pictures?
 	}
 
 	
 	
-    private static void addJLabel(String text, boolean bold, int size, Color color, int ipy, int gw, int x, int y) {
+    private static void addJLabel(String text, boolean bold, int size, Color color, int ipy, int gw, int ipx, int x, int y) {
     	JLabel label = new JLabel(text);
     	if(bold)
     		label.setFont(new Font("Futura", Font.BOLD, size));
@@ -265,7 +285,8 @@ public class Gui {
     	c.fill = GridBagConstraints.HORIZONTAL;
     	if(ipy != -1)
     		c.ipady = ipy;
-    	c.weightx = 0.0;
+    	if(ipx != -1)
+    		c.ipadx = ipx;
     	c.gridwidth = gw;
     	c.gridx = x;
     	c.gridy = y;

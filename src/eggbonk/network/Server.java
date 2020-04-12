@@ -18,7 +18,7 @@ import eggbonk.core.Player;
 public class Server {
     /** Default port number where the server listens for connections. */
     public static final int PORT = 1234;
-    static final int NUM_PLAYERS = 3;
+    static final int NUM_PLAYERS = 5;
     static Game game;
     
     private static boolean waitingForPlayers = true;
