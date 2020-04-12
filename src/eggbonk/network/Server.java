@@ -94,9 +94,10 @@ public class Server {
         ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
 
         try {
+            
             Player player = (Player) in.readObject(); // exception here if client sends incorrect data type
             int currentPlayerNum = players.size();
-            
+
             players.add(player);
 
             // wait until everyone has connected
@@ -114,6 +115,7 @@ public class Server {
                 // choose which players are bonking
                 Player currentPlayer1 = players.get(currentIndex);
                 Player currentPlayer2 = currentIndex + 1 < players.size() ? players.get(currentIndex + 1) : players.get(0);
+                
                 
                 // choose winner and loser
                 Player winner = (int) (Math.random() * 2) == 0 ? currentPlayer1 : currentPlayer2;
@@ -147,13 +149,13 @@ public class Server {
                 readyToBonk = 0;
                 
                 readyCheck.start();
-                
-                while(readyToBonk < 2) {Thread.sleep(10);};
+
+                while(readyToBonk < 2) {Thread.sleep(10);}
                 readyCheck.interrupt();
                 
                 // set the state to bonking
                 out.writeUnshared(new GameState(GameState.Phase.BONKING, List.copyOf(players), winner, loser));
-
+                Thread.sleep(1000);
             }
             
             out.writeUnshared(new GameState(GameState.Phase.TOTAL_VICTORY, List.copyOf(players)));
