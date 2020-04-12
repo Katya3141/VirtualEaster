@@ -2,13 +2,22 @@ package eggbonk.core;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.List;
+import static java.util.concurrent.TimeUnit.SECONDS;
+
+import org.jdesktop.core.animation.timing.Animator;
+import org.jdesktop.core.animation.timing.PropertySetter;
+import org.jdesktop.core.animation.timing.interpolators.AccelerationInterpolator;
+import org.jdesktop.swing.animation.timing.sources.SwingTimerTimingSource;
 
 import javax.swing.*;
 
@@ -165,8 +174,73 @@ public class Gui {
 		});
 	}
 	
+	static private class ImagePanel extends JPanel {
+
+		private static final long serialVersionUID = 3849958772549333929L;
+		
+		private BufferedImage image;
+//		Animator animator;
+		
+		private ImagePanel(BufferedImage img) {
+			image = img;
+			this.setPreferredSize(new Dimension(img.getWidth(), img.getHeight()));
+		}
+		
+		
+		@Override
+	    protected void paintComponent(Graphics g) {
+	        super.paintComponent(g);
+	        g.drawImage(image, 0, 0, this);          
+	    }
+	}
+	
 	private static void eggBonkAnimationScreen(GameState gameState) {
-	    //TODO do the animation, make sure to randomize positions
+		
+	    panel.setVisible(false);
+
+		JPanel animationPanel = new JPanel();
+		animationPanel.setPreferredSize(screenSize);
+
+		frame.add(animationPanel);
+		
+	    int random = (int) (Math.random() * 2);
+	    ImagePanel a, b;
+	    if(random == 0) {
+	    	a = new ImagePanel(gameState.getWinner().currentEgg().getImage());
+	    	b = new ImagePanel(gameState.getLoser().currentEgg().getImage());
+	    } else {
+	    	a = new ImagePanel(gameState.getLoser().currentEgg().getImage());
+	    	b = new ImagePanel(gameState.getWinner().currentEgg().getImage());
+	    }
+	    
+	    a.setLocation(animationPanel.getWidth() / 4, animationPanel.getHeight() / 2);
+	    b.setLocation(animationPanel.getWidth() * 3 / 4, animationPanel.getHeight() / 2);
+	    
+	    animationPanel.add(a);
+	    animationPanel.add(b);
+	    
+	    //TODO do the animation
+	    
+	    /*
+	    SwingTimerTimingSource animationTimer = new SwingTimerTimingSource();
+	    animationTimer.init();
+	    
+	    a.animator = new Animator.Builder(animationTimer).setDuration(2, SECONDS).setDisposeTimingSource(true).build();
+	    b.animator = new Animator.Builder(animationTimer).setDuration(2, SECONDS).setDisposeTimingSource(true).build();
+	    
+	    Point target = new Point(panel.getWidth() / 2, panel.getHeight() / 2);
+	    
+	    a.animator.addTarget(PropertySetter.getTargetTo(a, "location", new AccelerationInterpolator(0.5,0.5), target));
+	    b.animator.addTarget(PropertySetter.getTargetTo(b, "location", new AccelerationInterpolator(0.5,0.5), target));
+
+	    a.animator.start();
+	    b.animator.start();
+	    */
+	    
+	    // display a on the left
+	    // display b on the right
+	    // zooom them at each other
+	    // KAPOW
 	    
 	    Gui.switchToScreen(Screen.EGG_BONK_RESULT, gameState);
 	}

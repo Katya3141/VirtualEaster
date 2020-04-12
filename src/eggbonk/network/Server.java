@@ -22,6 +22,7 @@ public class Server {
     static Game game;
     
     private static boolean waitingForPlayers = true;
+    private static int readyToBonk = 0;
     
     static List<Player> players = new ArrayList<Player>();
     
@@ -134,8 +135,21 @@ public class Server {
                 }
                 
                 // wait until the two bonkers are ready
-                if(!in.readObject().equals("ready")) throw new IOException();
-                if(!in.readObject().equals("ready")) throw new IOException();
+                Thread readyCheck = new Thread(() -> {
+                	try {
+						if(!in.readObject().equals("ready")) throw new IOException();
+						readyToBonk++;
+					} catch (ClassNotFoundException | IOException e) {
+						e.printStackTrace();
+					}
+                });
+                
+                readyToBonk = 0;
+                
+                readyCheck.start();
+                
+                while(readyToBonk < 2) {Thread.sleep(10);};
+                readyCheck.interrupt();
                 
                 // set the state to bonking
                 out.writeUnshared(new GameState(GameState.Phase.BONKING, List.copyOf(players), winner, loser));
