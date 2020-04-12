@@ -1,5 +1,7 @@
 package eggbonk.core;
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -133,22 +135,42 @@ public class Gui {
 	}
 
 	private static void drawingScreen() {
+	    frame.remove(panel);
+	    //System.out.println(frame.getComponents());
+	    Container content = frame.getContentPane();
+	    //Creates a new container
+	    content.setLayout(new BorderLayout());
+	    //sets the layout
 
-		//button: done with drawing on eggs -> myClient.sendPlayer(new Player(name, egg1, egg2));
+	    final PadDraw drawPad = new PadDraw();
+	    //creates a new padDraw, which is pretty much the paint program
 
-		JButton button = addButton("test!", 3, 3, 4);
+	    content.add(drawPad, BorderLayout.CENTER);
+	    //sets the padDraw in the center
+	    
+	    JButton done = new JButton("Done coloring!");
+	    
+	    content.add(done, BorderLayout.SOUTH);
+	    
+	    content.setPreferredSize(screenSize);
+	    
+	    //button: done with drawing on eggs -> myClient.sendPlayer(new Player(name, egg1, egg2));
+	    
+	    //button listener to complete drawings
+        done.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                frame.setContentPane(new Container());
+                frame.add(panel);
+                frame.setPreferredSize(screenSize);
+                try {
+                    myClient.sendPlayer(new Player(name, new Egg(), new Egg()));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }          
+        });
 
-		//button listener to set name
-		button.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				try {
-					myClient.sendPlayer(new Player(name, new Egg(), new Egg()));
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}          
-		});
 	}
 
 	private static void eggBonkSetupScreen(List<Player> players) {
