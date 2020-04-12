@@ -103,4 +103,8 @@ class PadDraw extends JComponent{
         repaint();
     }
     //green paint
+    
+    public Image getImage() {
+        return image;
+    }
 }

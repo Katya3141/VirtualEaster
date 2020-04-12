@@ -2,6 +2,7 @@ package eggbonk.core;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.awt.Image;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -27,7 +28,7 @@ public class Egg implements Serializable {
 	private transient BufferedImage image;
 	
 	/**
-	 * Creates an undamaged egg.
+	 * Creates an undamaged egg with default image.
 	 */
 	public Egg() {
 		damage = UNDAMAGED;
@@ -37,6 +38,13 @@ public class Egg implements Serializable {
 			e.printStackTrace();
 		}
 	}
+	
+	 /**
+     * Creates an undamaged egg with specified image.
+     */
+    public Egg(Image im) {
+        image = (BufferedImage) im;
+    }
 	
 	/**
 	 * Gets the damage of this egg. The value returned will be equal to {@linkplain Egg#UNDAMAGED},
