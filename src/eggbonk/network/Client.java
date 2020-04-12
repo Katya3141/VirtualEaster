@@ -120,7 +120,7 @@ public class Client implements AutoCloseable {
      */
     public static void main(String[] args) {
         try (
-                Client client = new Client("localhost", 1234);
+                Client client = new Client("192.168.2.82", 1234);
         ) {
             client.startClient();
             

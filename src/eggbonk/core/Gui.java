@@ -261,6 +261,10 @@ public class Gui {
 	
 	private static void eggBonkResultScreen(Player winner, Player loser) {
 	    //TODO display the results
+		addJLabel(loser.getName() + " CRACKED, " + winner.getName() + " WINS!", true, 50, new Color(0x4287f5), 40, 3, 0, 0, 0);
+		JLabel winnerLabel = new JLabel(new ImageIcon(winner.currentEgg().getImage()));
+        c.gridx = 0; c.gridy = 1;
+        panel.add(winnerLabel, c);
 	}
 	
 	private static void finalResultScreen(Player winner) {
@@ -269,6 +273,7 @@ public class Gui {
         c.gridx = 0; c.gridy = 2;
         panel.add(picLabelWinner, c);
         
+        //TODO: add cracked loser
 	}
 
 	

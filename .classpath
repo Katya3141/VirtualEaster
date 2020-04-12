@@ -6,7 +6,7 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/Users/ianbulovic/Desktop/timingframework-core-7.3.1.jar"/>
-	<classpathentry kind="lib" path="/Users/ianbulovic/Desktop/timingframework-swing-7.3.1.jar"/>
+	<classpathentry kind="lib" path="/Users/norabulovic/javaProjects/VirtualEaster/timingframework-core-7.3.1.jar"/>
+	<classpathentry kind="lib" path="/Users/norabulovic/javaProjects/VirtualEaster/timingframework-swing-7.3.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
