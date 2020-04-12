@@ -282,37 +282,11 @@ public class Gui {
 		JPanel animationPanel = new AnimationPanel(a, b, gameState, up);
 		frame.add(animationPanel);
 
-
-
-		//TODO do the animation
-
-		/*
-	    SwingTimerTimingSource animationTimer = new SwingTimerTimingSource();
-	    animationTimer.init();
-
-	    a.animator = new Animator.Builder(animationTimer).setDuration(2, SECONDS).setDisposeTimingSource(true).build();
-	    b.animator = new Animator.Builder(animationTimer).setDuration(2, SECONDS).setDisposeTimingSource(true).build();
-
-	    Point target = new Point(panel.getWidth() / 2, panel.getHeight() / 2);
-
-	    a.animator.addTarget(PropertySetter.getTargetTo(a, "location", new AccelerationInterpolator(0.5,0.5), target));
-	    b.animator.addTarget(PropertySetter.getTargetTo(b, "location", new AccelerationInterpolator(0.5,0.5), target));
-
-	    a.animator.start();
-	    b.animator.start();
-		 */
-
-		// display a on the left
-		// display b on the right
-		// zooom them at each other
-		// KAPOW
-
-		//Gui.switchToScreen(Screen.EGG_BONK_RESULT, gameState);
 	}
 
 	private static void eggBonkResultScreen(Player winner, Player loser) {
 		//TODO display the results
-		frame.add(panel);
+		panel.setVisible(true);
 		addJLabel(loser.getName() + " CRACKED, " + winner.getName() + " WINS!", true, 50, new Color(0x4287f5), 40, 3, 0, 0, 0);
 		JLabel winnerLabel = new JLabel(new ImageIcon(winner.currentEgg().getImage()));
 		panel.add(winnerLabel);
