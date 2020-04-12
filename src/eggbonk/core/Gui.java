@@ -193,7 +193,10 @@ public class Gui {
 	}
 	
 	private static void finalResultScreen(Player winner) {
-	    //TODO display the winner
+	    addJLabel("THE EGG BONK CHAMPION 2020 IS", false, 20, new Color(0x4287f5), 40, 3, 0, 0, 0);
+        addJLabel(winner.getName(), true, 50, new Color(0x4287f5), 40, 3, 0, 0, 1);
+        
+        //TODO display egg pictures?
 	}
 
 	
