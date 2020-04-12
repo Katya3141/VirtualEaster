@@ -3,6 +3,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
@@ -209,50 +210,50 @@ public class Gui {
 		});
 	}
 	
-	static private class ImagePanel extends JPanel {
+	static class AnimationPanel extends JPanel {
 
-		private static final long serialVersionUID = 3849958772549333929L;
+		private static final long serialVersionUID = -7889930119324580716L;
 		
-		private BufferedImage image;
-//		Animator animator;
+		BufferedImage a, b;
 		
-		private ImagePanel(BufferedImage img) {
-			image = img;
-			this.setPreferredSize(new Dimension(img.getWidth(), img.getHeight()));
+		AnimationPanel(BufferedImage a, BufferedImage b) {
+			super();
+			setLayout(null);
+			this.setBackground(new Color(0xffb5f8));
+			setPreferredSize(screenSize);
+			this.a = a;
+			this.b = b;
+			setVisible(true);
 		}
 		
-		
 		@Override
-	    protected void paintComponent(Graphics g) {
-	        super.paintComponent(g);
-	        g.drawImage(image, 0, 0, this);          
-	    }
+		protected void paintComponent(Graphics g) {
+			super.paintComponent(g);
+			g.drawImage(a, 0, (screenSize.height / 2) - (a.getHeight() / 2), this);
+			g.drawImage(b, screenSize.width - b.getWidth(), (screenSize.height / 2) - (b.getHeight() / 2), this);
+		}
 	}
 	
 	private static void eggBonkAnimationScreen(GameState gameState) {
 		
 	    panel.setVisible(false);
 
-		JPanel animationPanel = new JPanel();
-		animationPanel.setPreferredSize(screenSize);
 
-		frame.add(animationPanel);
 		
 	    int random = (int) (Math.random() * 2);
-	    ImagePanel a, b;
+	    BufferedImage a, b;
 	    if(random == 0) {
-	    	a = new ImagePanel(gameState.getWinner().currentEgg().getImage());
-	    	b = new ImagePanel(gameState.getLoser().currentEgg().getImage());
+	    	a = gameState.getWinner().currentEgg().getImage();
+	    	b = gameState.getLoser().currentEgg().getImage();
 	    } else {
-	    	a = new ImagePanel(gameState.getLoser().currentEgg().getImage());
-	    	b = new ImagePanel(gameState.getWinner().currentEgg().getImage());
+	    	a = gameState.getLoser().currentEgg().getImage();
+	    	b = gameState.getWinner().currentEgg().getImage();
 	    }
+	    	    
+		JPanel animationPanel = new AnimationPanel(a, b);
+		frame.add(animationPanel);
 	    
-	    a.setLocation(animationPanel.getWidth() / 4, animationPanel.getHeight() / 2);
-	    b.setLocation(animationPanel.getWidth() * 3 / 4, animationPanel.getHeight() / 2);
 	    
-	    animationPanel.add(a);
-	    animationPanel.add(b);
 	    
 	    //TODO do the animation
 	    
