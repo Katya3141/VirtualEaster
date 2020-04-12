@@ -139,14 +139,16 @@ public class Gui {
 	    //System.out.println(frame.getComponents());
 	    Container content = frame.getContentPane();
 	    //Creates a new container
-	    content.setLayout(new BorderLayout());
+	    content.setLayout(null);
 	    //sets the layout
 
-	    final PadDraw drawPad = new PadDraw();
+	    final PadDraw eggPad1 = new PadDraw();
+	    eggPad1.setPreferredSize(new Dimension(300,300));
+	    final PadDraw eggPad2 = new PadDraw();
 	    //creates a new padDraw, which is pretty much the paint program
 
-	    content.add(drawPad, BorderLayout.CENTER);
-	    //sets the padDraw in the center
+	    content.add(eggPad1, 100, 100);
+	    //sets the padDraw in the east
 	    
 	    JButton done = new JButton("Done coloring!");
 	    
