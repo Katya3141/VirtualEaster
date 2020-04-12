@@ -58,12 +58,15 @@ public class Game {
 	}
 	
 	public void removeExtraneousPlayers() {
+	    boolean someoneOut = false;
 		for(int i = 0; i < players.size(); i++) {
 			if(players.get(i).isOut()) {
+			    someoneOut = true;
 				players.remove(i);
-				currentPlayer = (currentPlayer + 1) % players.size();
 				i--;
 			}
 		}
+		if(!someoneOut)
+		    currentPlayer = (currentPlayer + 1) % players.size();
 	}
 }
